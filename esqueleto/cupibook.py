@@ -53,22 +53,22 @@ def crear_amigo( nombre: str, fecha_de_nacimiento: int,
         Diccionario del amigo con su información.
 
     """
-    usuario = {"nombre":nombre, 
-               "fecha_nacimiento": fecha_de_nacimiento, 
+    usuario = {"nombre":nombre,
+               "fecha_nacimiento": fecha_de_nacimiento,
                "signo_zodiacal": asignar_signo_zodiacal(fecha_de_nacimiento),
-               "genero": genero, 
+               "genero": genero,
                "genero_musical_favorito": genero_musical_favorito,
                "genero_literario_favorito": genero_literario_favorito,
                "likes": numero_de_likes,
                "numero_de_publicaciones": numero_de_publicaciones,
                "bloqueado": bloqueado,
                "cantidad_de_amigos":cantidad_de_amigos,}
-    
+
     return usuario
 
 
-def buscar_amigo_por_nombre( nombre:str, a1: dict, a2: dict, a3: dict, 
-                            a4: dict ) -> dict:
+def buscar_amigo_por_nombre(nombre: str, a1: dict, a2: dict, a3: dict,
+                            a4: dict) -> dict:
     """
     Busca el amigo con el nombre pasado por parámetro.
     En caso de no haber coincidencia se retorna None.
@@ -93,16 +93,14 @@ def buscar_amigo_por_nombre( nombre:str, a1: dict, a2: dict, a3: dict,
         Retorna None si no lo encuentra.
 
     """
+    dicc_amigo = None
     if a1.get("nombre") == nombre:
         dicc_amigo = a1
-        
-    elif a2.get("nombre") == nombre:
+    if a2.get("nombre") == nombre:
         dicc_amigo = a2
-    
-    elif a3.get("nombre") == nombre:
+    if a3.get("nombre") == nombre:
         dicc_amigo = a3
-        
-    elif a4.get("nombre") == nombre:
+    if a4.get("nombre") == nombre:
         dicc_amigo = a4
     
     return dicc_amigo
@@ -131,14 +129,14 @@ def buscar_amigo_con_mas_likes( a1: dict, a2: dict, a3: dict,
     """
     likes = a1.get("likes")
     amigo_famoso = a1
-    
+
     if likes < a2.get("likes"):
         likes = a2.get("likes")
         amigo_famoso = a2
     if likes < a3.get("likes"):
         likes = a3.get("likes")
         amigo_famoso = a3
-        
+
     return amigo_famoso
 
 
@@ -165,14 +163,14 @@ def buscar_amigo_con_menos_publicaciones( a1: dict, a2: dict, a3: dict,
     """
     publicaciones = a1.get("numero_de_publicaciones")
     mas_publicaciones = a1
-    
+
     if publicaciones < a2.get("numero_de_publicaciones"):
         mas_publicaciones = a2.get("numero_de_publicaciones")
         mas_publicaciones = a2
     if publicaciones < a3.get("numero_de_publicaciones"):
         mas_publicaciones = a3.get("numero_de_publicaciones")
         mas_publicaciones = a3
-        
+
     return mas_publicaciones
 
 def asignar_signo_zodiacal( fecha: int ) -> str:
@@ -194,7 +192,7 @@ def asignar_signo_zodiacal( fecha: int ) -> str:
     """
     # TODO: completar y remplazar la siguiente linea por el resultado correcto
     return None
-    
+
 def es_cupiamigo( amigo1: dict , amigo2: dict) -> bool:
     """
     Función que determina si dos amigos son Cupiamigos.
