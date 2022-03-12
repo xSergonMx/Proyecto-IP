@@ -102,7 +102,7 @@ def buscar_amigo_por_nombre(nombre: str, a1: dict, a2: dict, a3: dict,
         dicc_amigo = a3
     if a4.get("nombre") == nombre:
         dicc_amigo = a4
-    
+
     return dicc_amigo
 
 
@@ -134,7 +134,6 @@ def buscar_amigo_con_mas_likes( a1: dict, a2: dict, a3: dict,
         likes = a2.get("likes")
         amigo_famoso = a2
     if likes < a3.get("likes"):
-        likes = a3.get("likes")
         amigo_famoso = a3
 
     return amigo_famoso
@@ -162,18 +161,17 @@ def buscar_amigo_con_menos_publicaciones( a1: dict, a2: dict, a3: dict,
         Diccionario que representa al amigo con menos publicaciones en la plataforma.
     """
     publicaciones = a1.get("numero_de_publicaciones")
-    mas_publicaciones = a1
+    menos_publicaciones = a1
 
-    if publicaciones < a2.get("numero_de_publicaciones"):
-        mas_publicaciones = a2.get("numero_de_publicaciones")
-        mas_publicaciones = a2
-    if publicaciones < a3.get("numero_de_publicaciones"):
-        mas_publicaciones = a3.get("numero_de_publicaciones")
-        mas_publicaciones = a3
+    if publicaciones > a2.get("numero_de_publicaciones"):
+        publicaciones = a2.get("numero_de_publicaciones")
+        menos_publicaciones = a2
+    if publicaciones > a3.get("numero_de_publicaciones"):
+        menos_publicaciones = a3
 
-    return mas_publicaciones
+    return menos_publicaciones
 
-def asignar_signo_zodiacal( fecha: int ) -> str:
+def asignar_signo_zodiacal(fecha: int) -> str:
     """
     Función que determina de acuerdo a una fecha dada, el signo zodiacal
     correspondiente.
@@ -190,8 +188,21 @@ def asignar_signo_zodiacal( fecha: int ) -> str:
         Cadena con el signo zodiacal del amigo.
 
     """
-    # TODO: completar y remplazar la siguiente linea por el resultado correcto
-    return None
+    fechas_signos = {"capricornio": (22, 12, 20, 1)}
+
+    fecha = str(fecha)
+    mes = int(fecha[4:6])
+    dia = int(fecha[6:])
+
+
+    return f"El dia es {dia} y el mes {mes}"
+
+def determinar_signo(dia:int, mes: int, fecha_signos:dict) -> str:
+
+    for
+    if (mes == 12 and dia >= 22) or (mes == 1 and dia <= 20):
+
+
 
 def es_cupiamigo( amigo1: dict , amigo2: dict) -> bool:
     """
