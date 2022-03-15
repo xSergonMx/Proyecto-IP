@@ -171,6 +171,50 @@ def buscar_amigo_con_menos_publicaciones( a1: dict, a2: dict, a3: dict,
 
     return menos_publicaciones
 
+
+def determinar_signo(dia:int, mes: int, fecha_signos:dict) -> str:
+    
+    capricornio = fecha_signos["capricornio"]
+    acuario = fecha_signos["acuario"]
+    piscis = fecha_signos["piscis"]
+    aries = fecha_signos["aries"]
+    tauro = fecha_signos["tauro"]
+    geminis = fecha_signos["geminis"]
+    cancer = fecha_signos["cancer"]
+    leo = fecha_signos["leo"]
+    virgo = fecha_signos["virgo"]
+    libra = fecha_signos["libra"]
+    escorpio = fecha_signos["escorpio"]
+    sagitario = fecha_signos["sagitario"]
+
+    if (mes == capricornio[0] and dia >= capricornio[1]) or (mes == capricornio[2] and dia <= capricornio[3]):
+        resultado = "capricornio"
+    elif (mes == acuario[0] and dia >= acuario[1]) or (mes == acuario[2] and dia <= acuario[3]):
+        resultado = "acuario"
+    elif (mes == piscis[0] and dia >= piscis[1]) or (mes == piscis[2] and dia <= piscis[3]):
+        resultado = "piscis"
+    elif (mes == aries[0] and dia >= aries[1]) or (mes == aries[2] and dia <= aries[3]):
+        resultado = "aries"
+    elif (mes == tauro[0] and dia >= tauro[1]) or (mes == tauro[2] and dia <= tauro[3]):
+        resultado = "tauro"
+    elif (mes == geminis[0] and dia >= geminis[1]) or (mes == geminis[2] and dia <= geminis[3]):
+        resultado = "geminis"
+    elif (mes == cancer[0] and dia >= cancer[1]) or (mes == cancer[2] and dia <= cancer[3]):
+        resultado = "cancer"
+    elif (mes == leo[0] and dia >= leo[1]) or (mes == leo[2] and dia <= leo[3]):
+        resultado = "leo"
+    elif (mes == virgo[0] and dia >= virgo[1]) or (mes == virgo[2] and dia <= virgo[3]):
+        resultado = "virgo"
+    elif (mes == libra[0] and dia >= libra[1]) or (mes == libra[2] and dia <= libra[3]):
+        resultado = "libra"
+    elif (mes == escorpio[0] and dia >= escorpio[1]) or (mes == escorpio[2] and dia <= escorpio[3]):
+        resultado = "escorpio"
+    elif (mes == sagitario[0] and dia >= sagitario[1]) or (mes == sagitario[2] and dia <= sagitario[3]):
+        resultado = "sagitario"
+
+    return resultado
+
+
 def asignar_signo_zodiacal(fecha: int) -> str:
     """
     Función que determina de acuerdo a una fecha dada, el signo zodiacal
@@ -188,20 +232,28 @@ def asignar_signo_zodiacal(fecha: int) -> str:
         Cadena con el signo zodiacal del amigo.
 
     """
-    fechas_signos = {"capricornio": (22, 12, 20, 1)}
+    fecha_signos = {"capricornio": (12, 22, 1, 20),
+                    "acuario": (1, 21, 2, 19),
+                    "piscis": (2, 20, 3, 20),
+                    "aries": (3,21, 4, 20),
+                    "tauro": (4, 21, 5, 21),
+                    "geminis": (5, 22, 6, 21),
+                    "cancer": (6,22, 7, 22),
+                    "leo": (7, 23, 8, 22),
+                    "virgo": (8, 23, 9, 22),
+                    "libra": (9, 23, 10, 22),
+                    "escorpio": (10, 23, 11, 22),
+                    "sagitario": (11, 23, 12, 21)}
 
     fecha = str(fecha)
     mes = int(fecha[4:6])
     dia = int(fecha[6:])
+    signo = determinar_signo(dia, mes, fecha_signos)
 
 
-    return f"El dia es {dia} y el mes {mes}"
+    return signo
 
-def determinar_signo(dia:int, mes: int, fecha_signos:dict) -> str:
-
-    for
-    if (mes == 12 and dia >= 22) or (mes == 1 and dia <= 20):
-
+#print(asignar_signo_zodiacal(19771226))
 
 
 def es_cupiamigo( amigo1: dict , amigo2: dict) -> bool:
