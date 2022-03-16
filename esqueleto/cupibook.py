@@ -53,7 +53,7 @@ def crear_amigo( nombre: str, fecha_de_nacimiento: int,
         Diccionario del amigo con su información.
 
     """
-    usuario = {"nombre":nombre,
+    usuario = {"nombre": nombre,
                "fecha_nacimiento": fecha_de_nacimiento,
                "signo_zodiacal": asignar_signo_zodiacal(fecha_de_nacimiento),
                "genero": genero,
@@ -135,6 +135,9 @@ def buscar_amigo_con_mas_likes( a1: dict, a2: dict, a3: dict,
         amigo_famoso = a2
     if likes < a3.get("likes"):
         amigo_famoso = a3
+        likes = a3.get("likes")
+    if likes < a4.get("likes"):
+        amigo_famoso = a4
 
     return amigo_famoso
 
@@ -167,6 +170,9 @@ def buscar_amigo_con_menos_publicaciones( a1: dict, a2: dict, a3: dict,
         publicaciones = a2.get("numero_de_publicaciones")
         menos_publicaciones = a2
     if publicaciones > a3.get("numero_de_publicaciones"):
+        publicaciones = a3.get("numero_de_publicaciones")
+        menos_publicaciones = a3
+    if publicaciones > a4.get("numero_de_publicaciones"):
         menos_publicaciones = a3
 
     return menos_publicaciones
@@ -273,8 +279,15 @@ def es_cupiamigo( amigo1: dict , amigo2: dict) -> bool:
         True si los dos amigos son Cupiamigos, False de lo contrario.
 
     """
-    # TODO: completar y remplazar la siguiente linea por el resultado correcto
-    return None
+    cupiamigos = False
+
+    if amigo1["cantidad_de_amigos"] >= 3 and amigo2["cantidad_de_amigos"] >= 3:
+        if not amigo1["bloqueado"] and not amigo2["bloqueado"]:
+            if amigo1["genero_literario_favorito"] == amigo2["genero_literario_favorito"] and amigo1["genero_literario_favorito"] == amigo2["genero_literario_favorito"]:
+                if signo_es_compatible(amigo1, amigo2):
+                    cupiamigos = True
+
+    return cupiamigos
 
 def es_cupienemigo( amigo:dict ) -> bool:
     """
@@ -291,8 +304,12 @@ def es_cupienemigo( amigo:dict ) -> bool:
         True si es Cupienemigo, False de lo contrario.
 
     """
-    # TODO: completar y remplazar la siguiente linea por el resultado correcto
-    return None
+    cupienemigo = False
+
+    if amigo["bloqueado"] and amigo["cantidad_de_amigos"] == 0 and amigo["likes"] < 5:
+        cupienemigo = True
+
+    return cupienemigo
 
 def signo_es_compatible( amigo1: dict, amigo2: dict ) -> bool:
     """
@@ -312,8 +329,48 @@ def signo_es_compatible( amigo1: dict, amigo2: dict ) -> bool:
         contrario.
 
     """
-    # TODO: completar y remplazar la siguiente linea por el resultado correcto
-    return None
+    signo_compatible = {"aries": ("geminis", "leo", "libra", "sagitario"),
+                        "tauro": ("tauro", "cancer", "virgo", "libra", "escorpio", "capricornio", "piscis"),
+                        "geminis": ("aries", "leo", "libra", "acuario"),
+                        "cancer": ("tauro", "virgo", "escorpio", "piscis"),
+                        "leo": ("aries", "geminis", "leo", "virgo", "libra"),
+                        "virgo": ("tauro", "cancer", "leo", "virgo", "escorpio", "capricornio", "piscis"),
+                        "libra": ("aries", "tauro", "geminis", "leo", "libra", "acuario"),
+                        "escorpio": ("tauro", "cancer", "virgo", "piscis"),
+                        "sagitario": ("aries", "sagitario", "acuario"),
+                        "capricornio": ("tauro", "virgo", "piscis"),
+                        "acuario": ("geminis", "libra", "sagitario", "acuario"),
+                        "piscis": ("tauro", "cancer", "virgo", "escorpio", "capricornio")}
+
+    compatibilidad = False
+
+    if amigo2.get("signo_zodiacal") in signo_compatible[amigo1.get("signo_zodiacal")]:
+        compatibilidad = True
+
+    return compatibilidad
+
+#print(signo_es_compatible({"signo_zodiacal": "acuario"} , {"signo_zodiacal": "geminis"}))
+
+
+def calcular_puntaje_amigo(amigo: dict) -> str:
+
+    generos_m = ("pop", "rap", "salsa")
+    generos_l = ("drama", "ciencia ficcion")
+    puntaje = 0
+    if amigo["cantidad_de_amigos"] > 5:
+        puntaje += 3
+    if amigo["bloqueado"]:
+        puntaje -= 10
+    if amigo["genero_musical_favorito"] in generos_m:
+        puntaje += 2
+    else:
+        puntaje += 1
+    if amigo["genero_literario_favorito"] in generos_l:
+        puntaje += 1
+    elif amigo["genero_literario_favorito"] == "lirico":
+        puntaje -= 1
+
+    return puntaje
 
 def amigo_mas_compatibilidad( a1: dict, a2: dict,
                                a3: dict, a4: dict ) -> dict:
@@ -339,8 +396,29 @@ def amigo_mas_compatibilidad( a1: dict, a2: dict,
         compatibilidad.
 
     """
-    # TODO: completar y remplazar la siguiente linea por el resultado correcto
-    return None
+    puntaje_a1 = calcular_puntaje_amigo(a1)
+    puntaje_a2 = calcular_puntaje_amigo(a2)
+    puntaje_a3 = calcular_puntaje_amigo(a3)
+    puntaje_a4 = calcular_puntaje_amigo(a4)
+
+    puntaje_mayor = a1
+
+    if puntaje_a1 < puntaje_a2:
+        puntaje_mayor = a2
+    if puntaje_a2 < puntaje_a3:
+        puntaje_mayor = a3
+    if puntaje_a3 < puntaje_a4:
+        puntaje_mayor = a4
+    return puntaje_mayor
+
+def coincidencia_generos(amigo:dict, genero_musical, genero_literario) -> int:
+
+    contador = 0
+    if amigo["genero_musical_favorito"] == genero_musical and amigo["genero_literario_favorito"] == genero_literario:
+        contador += 1
+
+    return contador
+
 
 def contar_amigos_con_generos(a1: dict, a2: dict,
                                 a3: dict, a4: dict, genero_musical:str,
@@ -371,5 +449,8 @@ def contar_amigos_con_generos(a1: dict, a2: dict,
         por parámetro.
 
     """
-    # TODO: completar y remplazar la siguiente linea por el resultado correcto
-    return None
+
+    return coincidencia_generos(a1, genero_musical, genero_literario) + \
+           coincidencia_generos(a2, genero_musical, genero_literario) + \
+           coincidencia_generos(a3, genero_musical, genero_literario) + \
+           coincidencia_generos(a4, genero_musical, genero_literario)
