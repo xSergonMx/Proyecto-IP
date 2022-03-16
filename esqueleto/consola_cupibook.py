@@ -63,7 +63,7 @@ def ejecutar_buscar_amigo_con_mas_likes( a1:dict, a2:dict,
     """
     amigo_con_mas_likes = cb.buscar_amigo_con_mas_likes(a1, a2, a3, a4)
     plantilla = "El amigo {0} es el amigo más famoso con {1} likes"
-    print(plantilla.format(amigo_con_mas_likes["nombre"], amigo_con_mas_likes["numero_de_likes"] ))
+    print(plantilla.format(amigo_con_mas_likes["nombre"], amigo_con_mas_likes["numero_de_likes"]))
 
 def ejecutar_buscar_amigo_con_menos_publicaciones( a1:dict, a2:dict, 
                                                     a3:dict, a4:dict ) -> None:
@@ -84,7 +84,9 @@ def ejecutar_buscar_amigo_con_menos_publicaciones( a1:dict, a2:dict,
     El programa debe mostrar al amigo: "El amigo X es el amigo con el
     menor número de publicaciones." En el cual X es el nombre del amigo.
     """
-    #TODO: Completar
+    usuario_con_menos_publicaciones = cb.buscar_amigo_con_menos_publicaciones(a1, a2, a3, a4)
+    plantilla = "El amigo {0} es el amigo con el menor número de publicaciones"
+    print(plantilla.format(usuario_con_menos_publicaciones["numero_de_publicaciones"]))
 
 def ejecutar_compatibilidad_segun_signo( a1:dict, a2:dict, 
                                          a3:dict, a4:dict ) -> None:
@@ -121,7 +123,11 @@ def ejecutar_compatibilidad_segun_signo( a1:dict, a2:dict,
 desea buscar: ")
     nombre_amigo2 = input("Ingrese el nombre del segundo amigo que \
 desea buscar: ")
-    #TODO: Completar
+    amigo1 = cb.buscar_amigo_por_nombre(nombre_amigo1, a1, a2, a3, a4)
+    amigo2 = cb.buscar_amigo_por_nombre(nombre_amigo2, a1, a2, a3, a4)
+
+    compatibilidad = cb.asignar_signo_zodiacal(amigo1, amigo2)
+
 
 def ejecutar_determinar_cupiamigo( a1:dict, a2:dict, 
                                   a3:dict, a4:dict ) -> None:
