@@ -61,7 +61,9 @@ def ejecutar_buscar_amigo_con_mas_likes( a1:dict, a2:dict,
     famoso con Y likes." En el cual X es el nombre del amigo y Y su número
     de likes.
     """
-    #TODO: Completar
+    amigo_con_mas_likes = cb.buscar_amigo_con_mas_likes(a1, a2, a3, a4)
+    plantilla = "El amigo {0} es el amigo más famoso con {1} likes"
+    print(plantilla.format(amigo_con_mas_likes["nombre"], amigo_con_mas_likes["numero_de_likes"] ))
 
 def ejecutar_buscar_amigo_con_menos_publicaciones( a1:dict, a2:dict, 
                                                     a3:dict, a4:dict ) -> None:

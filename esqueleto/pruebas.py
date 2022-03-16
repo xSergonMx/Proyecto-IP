@@ -4,3 +4,6 @@ fecha = str(fecha)
 mes = int(fecha[4:6])
 dia = int(fecha[6:])
 
+plantilla = "Hola {0} esta {1}"
+print(plantilla.format("como", "?"))
+

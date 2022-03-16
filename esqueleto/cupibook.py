@@ -59,7 +59,7 @@ def crear_amigo( nombre: str, fecha_de_nacimiento: int,
                "genero": genero,
                "genero_musical_favorito": genero_musical_favorito,
                "genero_literario_favorito": genero_literario_favorito,
-               "likes": numero_de_likes,
+               "numero_de_likes": numero_de_likes,
                "numero_de_publicaciones": numero_de_publicaciones,
                "bloqueado": bloqueado,
                "cantidad_de_amigos":cantidad_de_amigos,}
@@ -127,16 +127,16 @@ def buscar_amigo_con_mas_likes( a1: dict, a2: dict, a3: dict,
     dict
         Diccionario que representa al amigo más famoso de la plataforma
     """
-    likes = a1.get("likes")
+    likes = a1.get("numero_de_likes")
     amigo_famoso = a1
 
-    if likes < a2.get("likes"):
-        likes = a2.get("likes")
+    if likes < a2.get("numero_de_likes"):
+        likes = a2.get("numero_de_likes")
         amigo_famoso = a2
-    if likes < a3.get("likes"):
+    if likes < a3.get("numero_de_likes"):
         amigo_famoso = a3
-        likes = a3.get("likes")
-    if likes < a4.get("likes"):
+        likes = a3.get("numero_de_likes")
+    if likes < a4.get("numero_de_likes"):
         amigo_famoso = a4
 
     return amigo_famoso
@@ -306,7 +306,7 @@ def es_cupienemigo( amigo:dict ) -> bool:
     """
     cupienemigo = False
 
-    if amigo["bloqueado"] and amigo["cantidad_de_amigos"] == 0 and amigo["likes"] < 5:
+    if amigo["bloqueado"] and amigo["cantidad_de_amigos"] == 0 and amigo["numero_de_likes"] < 5:
         cupienemigo = True
 
     return cupienemigo
