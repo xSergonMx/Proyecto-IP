@@ -14,6 +14,11 @@ Temas:
 @author: Cupi2
 
 """
+import unidecode as uc
+
+def nm(string:str) ->str:
+    return uc.unidecode(string).lower()
+    
 
 def crear_amigo( nombre: str, fecha_de_nacimiento: int,
                  genero: str, genero_musical_favorito: str,
@@ -54,15 +59,15 @@ def crear_amigo( nombre: str, fecha_de_nacimiento: int,
 
     """
     usuario = {"nombre": nombre,
-               "fecha_nacimiento": fecha_de_nacimiento,
+               "fecha_de_nacimiento": fecha_de_nacimiento,
                "signo_zodiacal": asignar_signo_zodiacal(fecha_de_nacimiento),
                "genero": genero,
                "genero_musical_favorito": genero_musical_favorito,
                "genero_literario_favorito": genero_literario_favorito,
-               "numero_de_likes": numero_de_likes,
+               "likes": numero_de_likes,
                "numero_de_publicaciones": numero_de_publicaciones,
-               "bloqueado": bloqueado,
-               "cantidad_de_amigos":cantidad_de_amigos,}
+               "cantidad_de_amigos":cantidad_de_amigos, 
+               "bloqueado": bloqueado}
 
     return usuario
 
@@ -94,13 +99,15 @@ def buscar_amigo_por_nombre(nombre: str, a1: dict, a2: dict, a3: dict,
 
     """
     dicc_amigo = None
-    if a1.get("nombre") == nombre:
+    nombre = nm(nombre)
+    
+    if nm(a1.get("nombre")) == nombre:
         dicc_amigo = a1
-    if a2.get("nombre") == nombre:
+    if nm(a2.get("nombre")) == nombre: 
         dicc_amigo = a2
-    if a3.get("nombre") == nombre:
+    if nm(a3.get("nombre")) == nombre:
         dicc_amigo = a3
-    if a4.get("nombre") == nombre:
+    if nm(a4.get("nombre")) == nombre:
         dicc_amigo = a4
 
     return dicc_amigo
@@ -127,16 +134,16 @@ def buscar_amigo_con_mas_likes( a1: dict, a2: dict, a3: dict,
     dict
         Diccionario que representa al amigo más famoso de la plataforma
     """
-    likes = a1.get("numero_de_likes")
+    likes = a1.get("likes") 
     amigo_famoso = a1
 
-    if likes < a2.get("numero_de_likes"):
-        likes = a2.get("numero_de_likes")
+    if likes < a2.get("likes"):
+        likes = a2.get("likes")
         amigo_famoso = a2
-    if likes < a3.get("numero_de_likes"):
+    if likes < a3.get("likes"):
         amigo_famoso = a3
-        likes = a3.get("numero_de_likes")
-    if likes < a4.get("numero_de_likes"):
+        likes = a3.get("likes")
+    if likes < a4.get("likes"):
         amigo_famoso = a4
 
     return amigo_famoso
@@ -173,13 +180,30 @@ def buscar_amigo_con_menos_publicaciones( a1: dict, a2: dict, a3: dict,
         publicaciones = a3.get("numero_de_publicaciones")
         menos_publicaciones = a3
     if publicaciones > a4.get("numero_de_publicaciones"):
-        menos_publicaciones = a3
+        menos_publicaciones = a4
 
     return menos_publicaciones
 
 
 def determinar_signo(dia:int, mes: int, fecha_signos:dict) -> str:
-    
+    """
+    Funcion que determina el signo zodiacal de un usuario.
+
+    Parametros
+    ----------
+    dia : int
+        dia de nacimiento.
+    mes : int
+        Mes de nacimiento.
+    fecha_signos : dict
+        Diccionario con las fechas de los signos
+
+    Retorno
+    -------
+    str
+        Retorna el signo al que pertenece el usuario.
+
+    """
     capricornio = fecha_signos["capricornio"]
     acuario = fecha_signos["acuario"]
     piscis = fecha_signos["piscis"]
@@ -259,8 +283,6 @@ def asignar_signo_zodiacal(fecha: int) -> str:
 
     return signo
 
-#print(asignar_signo_zodiacal(19771226))
-
 
 def es_cupiamigo( amigo1: dict , amigo2: dict) -> bool:
     """
@@ -306,7 +328,7 @@ def es_cupienemigo( amigo:dict ) -> bool:
     """
     cupienemigo = False
 
-    if amigo["bloqueado"] and amigo["cantidad_de_amigos"] == 0 and amigo["numero_de_likes"] < 5:
+    if amigo["bloqueado"] or amigo["cantidad_de_amigos"] == 0 and amigo["likes"] < 5:
         cupienemigo = True
 
     return cupienemigo
@@ -343,7 +365,7 @@ def signo_es_compatible( amigo1: dict, amigo2: dict ) -> bool:
                         "piscis": ("tauro", "cancer", "virgo", "escorpio", "capricornio")}
 
     compatibilidad = False
-
+    
     if amigo2.get("signo_zodiacal") in signo_compatible[amigo1.get("signo_zodiacal")]:
         compatibilidad = True
 
@@ -352,10 +374,24 @@ def signo_es_compatible( amigo1: dict, amigo2: dict ) -> bool:
 #print(signo_es_compatible({"signo_zodiacal": "acuario"} , {"signo_zodiacal": "geminis"}))
 
 
-def calcular_puntaje_amigo(amigo: dict) -> str:
+def calcular_puntaje_amigo(amigo: dict) -> int:
+    """
+    Funcion que determina el puntaje de compatibilida de un usuario.
+
+    Parametros
+    ----------
+    amigo : dict
+        Disccionario con los datos del amigo
+
+    Retorno
+    -------
+    int
+        Retorna el puntaje optenido para el amigo.
+
+    """
 
     generos_m = ("pop", "rap", "salsa")
-    generos_l = ("drama", "ciencia ficcion")
+    generos_l = ("drama", "ciencia ficción")
     puntaje = 0
     if amigo["cantidad_de_amigos"] > 5:
         puntaje += 3
@@ -367,7 +403,7 @@ def calcular_puntaje_amigo(amigo: dict) -> str:
         puntaje += 1
     if amigo["genero_literario_favorito"] in generos_l:
         puntaje += 1
-    elif amigo["genero_literario_favorito"] == "lirico":
+    elif amigo["genero_literario_favorito"] == "lírico":
         puntaje -= 1
 
     return puntaje
@@ -412,9 +448,27 @@ def amigo_mas_compatibilidad( a1: dict, a2: dict,
     return puntaje_mayor
 
 def coincidencia_generos(amigo:dict, genero_musical, genero_literario) -> int:
+    """
+    Funcion que determina si el genero literario y musical son los buscados.
+
+    Parametros
+    ----------
+    amigo : dict
+        Diccionario del amigo.
+    genero_musical : TYPE
+        Genro musical a buscar.
+    genero_literario : TYPE
+        Genero literario a buscar.
+
+    Retorno
+    -------
+    int
+        Devuleve 1 si coincide con los parametros buscados.
+
+    """
 
     contador = 0
-    if amigo["genero_musical_favorito"] == genero_musical and amigo["genero_literario_favorito"] == genero_literario:
+    if nm(amigo["genero_musical_favorito"]) == nm(genero_musical) and nm(amigo["genero_literario_favorito"]) == nm(genero_literario):
         contador += 1
 
     return contador

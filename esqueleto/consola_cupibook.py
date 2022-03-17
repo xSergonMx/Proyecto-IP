@@ -41,6 +41,33 @@ def mostrar_amigo( amigo:dict ) -> None:
           "\n\nBloqueado: " + str(bloqueado)
     )
 
+
+def ejecutar_encontar_amigo_por_su_nombre(a1:dict, a2:dict, 
+                                           a3:dict, a4:dict) -> None:
+    """
+    Función que ejecuta la opción de encontar al amigo por nombre.
+
+    Parámetros
+    ----------
+    a1 : dict
+        Diccionario con la información del primer amigo.
+    a2 : dict
+        Diccionario con la información del segundo amigo.
+    a3 : dict
+        Diccionario con la información del tercer amigo.
+    a4 : dict
+        Diccionario con la información del cuarto amigo.
+    
+    El programa debe mostrar al amigo el diccionario del amigo con el
+    nombre buscado
+    """
+    nombre = input("Ingrese el nombre del primer amigo que desea buscar: ")
+    amigo = cb.buscar_amigo_por_nombre(nombre, a1, a2, a3, a4)
+    if amigo != None:
+        mostrar_amigo(amigo)
+    else:
+        print(f"El amigo {nombre} no existe en CupiBook")
+
 def ejecutar_buscar_amigo_con_mas_likes( a1:dict, a2:dict, 
                                            a3:dict, a4:dict ) -> None:
     """
@@ -63,7 +90,7 @@ def ejecutar_buscar_amigo_con_mas_likes( a1:dict, a2:dict,
     """
     amigo_con_mas_likes = cb.buscar_amigo_con_mas_likes(a1, a2, a3, a4)
     plantilla = "El amigo {0} es el amigo más famoso con {1} likes"
-    print(plantilla.format(amigo_con_mas_likes["nombre"], amigo_con_mas_likes["numero_de_likes"]))
+    print(plantilla.format(amigo_con_mas_likes["nombre"], amigo_con_mas_likes["likes"]))
 
 def ejecutar_buscar_amigo_con_menos_publicaciones( a1:dict, a2:dict, 
                                                     a3:dict, a4:dict ) -> None:
@@ -86,7 +113,7 @@ def ejecutar_buscar_amigo_con_menos_publicaciones( a1:dict, a2:dict,
     """
     usuario_con_menos_publicaciones = cb.buscar_amigo_con_menos_publicaciones(a1, a2, a3, a4)
     plantilla = "El amigo {0} es el amigo con el menor número de publicaciones"
-    print(plantilla.format(usuario_con_menos_publicaciones["numero_de_publicaciones"]))
+    print(plantilla.format(usuario_con_menos_publicaciones["nombre"]))
 
 def ejecutar_compatibilidad_segun_signo( a1:dict, a2:dict, 
                                          a3:dict, a4:dict ) -> None:
@@ -119,15 +146,23 @@ def ejecutar_compatibilidad_segun_signo( a1:dict, a2:dict,
     mostrar el mensaje "El amigo X no existe en CupiBook", donde X es el
     nombre que no se encontró
     """
-    nombre_amigo1 = input("Ingrese el nombre del primer amigo que \
-desea buscar: ")
-    nombre_amigo2 = input("Ingrese el nombre del segundo amigo que \
-desea buscar: ")
+    nombre_amigo1 = input("Ingrese el nombre del primer amigo que desea buscar: ")
+    nombre_amigo2 = input("Ingrese el nombre del segundo amigo que desea buscar: ")
+    
     amigo1 = cb.buscar_amigo_por_nombre(nombre_amigo1, a1, a2, a3, a4)
     amigo2 = cb.buscar_amigo_por_nombre(nombre_amigo2, a1, a2, a3, a4)
-
-    compatibilidad = cb.asignar_signo_zodiacal(amigo1, amigo2)
-
+    
+    if amigo1 == None:
+        print(f"El amigo {nombre_amigo1} no existe en CupiBook")
+    elif amigo2 == None:
+        print(f"El amigo {nombre_amigo2} no existe en CupiBook")
+    else:
+        compatibilidad = cb.signo_es_compatible(amigo1, amigo2)
+        if compatibilidad:
+            print(f"El amigo {nombre_amigo1} y el amigo {nombre_amigo2} son compatibles según su signo.")
+        elif not compatibilidad:
+            print(f"El amigo {nombre_amigo1} y el amigo {nombre_amigo2} no son compatibles según su signo.")
+            
 
 def ejecutar_determinar_cupiamigo( a1:dict, a2:dict, 
                                   a3:dict, a4:dict ) -> None:
@@ -163,7 +198,21 @@ def ejecutar_determinar_cupiamigo( a1:dict, a2:dict,
 desea buscar: ")
     nombre_amigo2 = input("Ingrese el nombre del segundo amigo que \
 desea buscar: ")
-    #TODO: Completar
+    
+    amigo1 = cb.buscar_amigo_por_nombre(nombre_amigo1, a1, a2, a3, a4)
+    amigo2 = cb.buscar_amigo_por_nombre(nombre_amigo2, a1, a2, a3, a4)
+    
+    if amigo1 == None:
+        print(f"El amigo {nombre_amigo1} no existe en CupiBook")
+    elif amigo2 == None:
+        print(f"El amigo {nombre_amigo2} no existe en CupiBook")
+    else:
+        cupiamigos = cb.es_cupiamigo(amigo1, amigo2) 
+        if cupiamigos:
+            print(f"El amigo {nombre_amigo1} y el amigo {nombre_amigo2} son Cupiamigos.")
+        elif not cupiamigos:
+            print(f"El amigo {nombre_amigo1} y el amigo {nombre_amigo2} no son Cupiamigos.")
+            
 
 def ejecutar_determinar_cupienemigo( a1:dict, a2:dict, 
                                      a3:dict, a4:dict ) -> None:
@@ -193,8 +242,19 @@ def ejecutar_determinar_cupienemigo( a1:dict, a2:dict,
     mostrar el mensaje "El amigo X no existe en CupiBook", donde X es el
     nombre que no se encontró
     """
+    
     nombre = input("Ingrese el nombre del amigo que desea buscar: ")
-    #TODO: Completar
+    usuario = cb.buscar_amigo_por_nombre(nombre, a1, a2, a3, a4)
+    
+    if usuario == None:
+        print(f"El amigo {nombre} no existe en CupiBook")
+    else:
+        cupienemigo = cb.es_cupienemigo(usuario)
+        if cupienemigo:
+            print(f"El amigo {nombre} es un Cupienemigo.")
+        elif not cupienemigo:
+            print(f"El amigo {nombre} no es un Cupienemigo.")
+        
 
 def ejecutar_amigo_mayor_compatibilidad( a1:dict, a2:dict, 
                                            a3:dict, a4:dict ) -> None:
@@ -217,7 +277,8 @@ def ejecutar_amigo_mayor_compatibilidad( a1:dict, a2:dict,
     puntaje de compatibilidad." En el cual X ese el nombre del amigo con
     mayor puntaje.
     """
-    #TODO: Completar
+    amigo_mas_compatible = cb.amigo_mas_compatibilidad(a1, a2, a3, a4).get("nombre")
+    print(f"El amigo {amigo_mas_compatible} es el amigo con mejor puntaje de compatibilidad.")
 
 def ejecutar_amigos_genero_musical_y_literario( a1:dict, a2:dict, 
                                                   a3:dict, a4:dict ) -> None:
@@ -245,13 +306,16 @@ def ejecutar_amigos_genero_musical_y_literario( a1:dict, a2:dict,
     genero_musical = input("Ingrese el género musical que desea consultar: ")
     genero_literario = input("Ingrese el género literario que desea \
 consultar: ")
-    #TODO: Completar
+    numero = cb.contar_amigos_con_generos(a1, a2, a3, a4, genero_musical, genero_literario)
+    print(f"""El número de amigos que tienen como
+género musical y como género literario 
+favoritos {genero_musical} y {genero_literario} son {numero}.""")
 
 def iniciar_aplicacion() -> None:
     fecha_nacimiento_a1 = 19960117
-    fecha_nacimiento_a2 = 20030510
+    fecha_nacimiento_a2 = 20030510 #taruo
     fecha_nacimiento_a3 = 20011108
-    fecha_nacimiento_a4 = 19990327
+    fecha_nacimiento_a4 = 19990327 #aries
     amigo1 = cb.crear_amigo("Pedro Sánchez", fecha_nacimiento_a1, "M", "pop", "drama", 100,
     20, 5, False) 
     amigo2 = cb.crear_amigo("Luna Ariza", fecha_nacimiento_a2, "O", "pop",
@@ -296,7 +360,8 @@ zodiacal")
     print(" 5 - Determinar amigo Cupienemigo")
     print(" 6 - Recomendar amigo con mayor compatibilidad")
     print(" 7 - Contar amigos con género musical y literario favorito")
-    print(" 8 - Salir de la aplicación")
+    print(" 8 - Encontrar amigo por su nombre")
+    print(" 9 - Salir de la aplicación")
 
     opcion_elegida = input("Ingrese la opción que desea ejecutar: ").strip()
 
@@ -317,6 +382,8 @@ zodiacal")
     elif opcion_elegida == "7":
         ejecutar_amigos_genero_musical_y_literario(a1, a2, a3, a4)
     elif opcion_elegida == "8":
+        ejecutar_encontar_amigo_por_su_nombre(a1, a2, a3, a4)
+    elif opcion_elegida == "9":
         continuar_ejecutando = False
     else:
         print("La opción " + opcion_elegida + " no es una opción válida.")
